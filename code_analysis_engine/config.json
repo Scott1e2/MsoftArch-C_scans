@@ -1,0 +1,40 @@
+{
+    "vulnerability_patterns": {
+        "buffer_overflow": [
+            "strcpy",
+            "sprintf",
+            "gets",
+            "strcat"
+        ],
+        "memory_management": [
+            "malloc",
+            "free",
+            "new",
+            "delete"
+        ],
+        "unsanitized_input": [
+            "scanf",
+            "gets",
+            "fgets"
+        ],
+        "dangerous_casting": [
+            "reinterpret_cast",
+            "C-style casts"
+        ]
+    },
+    "analysis_settings": {
+        "severity_thresholds": {
+            "critical": 10,
+            "high": 7,
+            "medium": 5,
+            "low": 2
+        },
+        "complexity_limit": 15,
+        "report_format": "json"
+    },
+    "code_smell_patterns": {
+        "nested_conditionals": 3,
+        "large_functions": 100,
+        "deep_inheritance": 5
+    }
+}
