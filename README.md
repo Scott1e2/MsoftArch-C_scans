@@ -3,17 +3,19 @@ a comprehensive tool for scanning Microsoft architecture and identifying C/C++ c
 
 
 
-# Microsoft focused "Static" Code Analysis Engine
+
+# Static Code and OS-Level Vulnerability Analysis Tool
 
 ## Overview
-This tool is designed for deep analysis of C/C++ code, identifying security vulnerabilities, code complexity, and common "code smells." It features modular analysis, including pattern-based detection, data flow tracking, C++ template handling, and complexity evaluation.
+This tool analyzes C/C++ code statically and performs dynamic, OS-level vulnerability detection. It is designed to detect code-level vulnerabilities, track runtime interactions, assess security mitigations, and identify functional issues in Windows-native applications.
 
 ### Key Features
-1. **Pattern-Based Vulnerability Detection**: Scans for known vulnerability patterns (e.g., buffer overflows, memory mismanagement).
-2. **Data Flow Analysis**: Tracks variables across functions, identifying unsanitized inputs and improper memory usage.
-3. **C++ Template and Macro Handling**: Analyzes templates and macros for complex constructs in C++ code.
-4. **Complexity and Smell Detection**: Detects high cyclomatic complexity, large functions, and deep inheritance.
-5. **Modular Reporting**: Exports findings in JSON, HTML, or text formats for easy analysis and sharing.
+1. **Static Analysis**: Identifies patterns, tracks data flow, detects complex constructs, and measures code complexity.
+2. **Dynamic Analysis** (OS-Level):
+   - **System Call and API Monitoring**: Hooks into Windows API to detect suspicious system calls.
+   - **Fuzz Testing**: Generates randomized inputs to test network protocols and services.
+   - **Security Mitigation Bypass Testing**: Tests bypassing DEP, ASLR, and other mitigations.
+   - **Functional Testing Framework**: Validates secure user interactions and permissions.
 
 ## Installation
 
@@ -23,76 +25,78 @@ This tool is designed for deep analysis of C/C++ code, identifying security vuln
     cd static-code-analysis-engine
     ```
 
-2. **Dependencies**: This tool is developed in Python and uses built-in libraries, so no additional dependencies are required.
+2. **Dependencies**: Built-in libraries; no additional dependencies required.
 
 ## Configuration
 
-Edit the `config.json` file to customize vulnerability patterns, severity thresholds, and complexity limits. Here’s an example of the configuration structure:
-```json
-{
-    "vulnerability_patterns": {
-        "buffer_overflow": ["strcpy", "sprintf", "gets", "strcat"],
-        "memory_management": ["malloc", "free", "new", "delete"],
-        "unsanitized_input": ["scanf", "gets", "fgets"],
-        "dangerous_casting": ["reinterpret_cast", "C-style casts"]
-    },
-    "analysis_settings": {
-        "severity_thresholds": {
-            "critical": 10,
-            "high": 7,
-            "medium": 5,
-            "low": 2
-        },
-        "complexity_limit": 15,
-        "report_format": "json"
-    },
-    "code_smell_patterns": {
-        "nested_conditionals": 3,
-        "large_functions": 100,
-        "deep_inheritance": 5
-    }
-}
-```
+The `config.json` file allows customization of vulnerability patterns, severity levels, and runtime settings.
 
 ## Usage
 
-1. **Run Individual Modules**:
-    - **Pattern-Based Analysis**:
-      ```bash
-      python static_analysis.py sample_code.c
-      ```
+### Static Analysis Modules
+- **Pattern-Based Vulnerability Detection**:
+  ```bash
+  python static_analysis.py sample_code.c
+  ```
 
-    - **Data Flow Analysis**:
-      ```bash
-      python data_flow_analysis.py sample_code.c
-      ```
+- **Data Flow Analysis**:
+  ```bash
+  python data_flow_analysis.py sample_code.c
+  ```
 
-    - **C++ Template and Macro Analysis**:
-      ```bash
-      python cpp_template_macro_analysis.py sample_code.cpp
-      ```
+- **C++ Template and Macro Analysis**:
+  ```bash
+  python cpp_template_macro_analysis.py sample_code.cpp
+  ```
 
-    - **Complexity and Smell Analysis**:
-      ```bash
-      python complexity_smell_analysis.py sample_code.cpp
-      ```
+- **Complexity and Smell Analysis**:
+  ```bash
+  python complexity_smell_analysis.py sample_code.cpp
+  ```
 
-2. **Output**:
-    Each module exports findings to a JSON file by default, with options for HTML or text output using `output_manager.py`. To change formats, edit the report format in `config.json`.
+### Dynamic Analysis Modules (OS-Level)
 
-## Modules
+1. **System Call and API Monitoring**:
+   ```bash
+   python dynamic_analysis_engine/dynamic_analysis.py
+   ```
+   - Monitors API calls and logs suspicious interactions.
 
-- **config_loader.py**: Centralized configuration loading for all modules.
-- **data_flow_analysis.py**: Tracks data flow to identify unsanitized inputs and memory mismanagement.
-- **cpp_template_macro_analysis.py**: Analyzes complex C++ constructs like templates and macros.
-- **complexity_smell_analysis.py**: Checks for high complexity and detects potential code smells.
-- **static_analysis.py**: Detects vulnerable patterns based on known C/C++ security risks.
-- **output_manager.py**: Manages output formats, exporting findings in JSON, HTML, or text.
-- **logging_config.py**: Centralizes logging setup for consistent logging across modules.
-- **utils.py**: Utility functions, e.g., file loading.
+2. **Fuzz Testing**:
+   ```bash
+   python dynamic_analysis_engine/fuzz_testing.py
+   ```
+   - Performs fuzz testing on HTTP protocols and Windows File Service.
 
-## License
-This project is licensed under the MIT License.
+3. **Security Mitigation Bypass Testing**:
+   ```bash
+   python dynamic_analysis_engine/security_mitigation_bypass.py
+   ```
+   - Simulates tests for DEP and ASLR bypass vulnerabilities.
 
-## Support
-For issues or suggestions, please open an issue on the GitHub repository.
+4. **Functional Testing Framework**:
+   ```bash
+   python dynamic_analysis_engine/functional_testing_framework.py
+   ```
+   - Runs user login and file access tests to ensure secure interactions.
+
+## File Structure
+
+```
+static_code_analysis_engine/
+├── config.json                        # Configuration file for analysis settings
+├── config_loader.py                   # Centralized configuration loading
+├── data_flow_analysis.py              # Static data flow analysis
+├── cpp_template_macro_analysis.py     # Static analysis of C++ templates and macros
+├── complexity_smell_analysis.py       # Complexity and code smell detection
+├── static_analysis.py                 # Pattern-based vulnerability detection
+├── output_manager.py                  # Handles JSON, HTML, and text output
+├── logging_config.py                  # Centralized logging configuration
+├── utils.py                           # Utility functions
+└── dynamic_analysis_engine/           # New folder for dynamic OS-level analysis
+    ├── dynamic_analysis.py            # Monitors system calls and API interactions
+    ├── fuzz_testing.py                # Protocol and service fuzz testing
+    ├── security_mitigation_bypass.py  # Tests for DEP and ASLR bypass
+    └── functional_testing_framework.py # User and file access permission testing
+```
+
